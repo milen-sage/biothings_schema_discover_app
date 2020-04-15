@@ -149,9 +149,12 @@ def load_schema_into_networkx(schema, load_class=True, load_property=True, load_
             if record["@id"] in classes:
                 classes[record["@id"]]["description"] = record["rdfs:comment"]
                 classes[record["@id"]]["type"] = "Class"
+                classes[record["@id"]]["displayName"] = record["sms:displayName"] if "sms:displayName" in record else record["rdfs:label"] 
+                
             else:
                 classes[record["@id"]] = {"description": record["rdfs:comment"],
                                           "type": "Class",
+                                          "displayName":record["sms:displayName"] if "sms:displayName" in record else record["rdfs:label"],
                                           "properties": [],
                                           "used_by": []}
             # add class edges
@@ -163,6 +166,7 @@ def load_schema_into_networkx(schema, load_class=True, load_property=True, load_
                 _inverse = _inverse["@id"]
             G.add_node(record["@id"],
                        description=record["rdfs:comment"],
+                       displayName=record["sms:displayName"] if "sms:displayName" in record else record["rdfs:label"],
                        domain=_domain,
                        range=_range,
                        inverse=_inverse,

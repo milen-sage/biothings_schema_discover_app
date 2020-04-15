@@ -33,6 +33,7 @@ METHODS_RETURN_DICT = ['describe']
 
 METHODS_RETURN_STR = ['description',
                       'label',
+                      'displayName',
                       'prefix',
                       'uri',
                       'inverse_property']
@@ -427,7 +428,19 @@ class SchemaClass():
 
     @property
     def label(self):
+        #if 'displayName' in self.se.full_class_only_graph.node[self.uri]:
+        #   return self.se.schema_nx.node[self.uri]['displayName']
+        #else:
+        #   return self.label
+
         return self.se.cls_converter.get_label(self.name)
+
+    @property
+    def displayName(self):
+        if 'displayName' in self.se.full_class_only_graph.node[self.uri]:
+           return self.se.schema_nx.node[self.uri]['displayName']
+        else:
+           return self.label
 
     @property
     def uri(self):
@@ -572,6 +585,7 @@ class SchemaClass():
                       'description': self.description,
                       'uri': self.uri,
                       'label': self.label,
+                      'displayName':self.displayName,
                       'curie': self.name,
                       'used_by': self.used_by(),
                       'child_classes': self.child_classes,
@@ -651,6 +665,10 @@ class SchemaProperty():
 
     @property
     def label(self):
+        #if 'displayName' in self.se.full_class_only_graph.node[self.uri]:
+        #   return self.se.schema_nx.node[self.uri]['displayName']
+        #else:
+        #   return self.label
         return self.se.prop_converter.get_label(self.name)
 
     @property
